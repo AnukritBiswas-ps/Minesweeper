@@ -1,0 +1,339 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #e0e0e0;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+        overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    z-index: -1;
+
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255, 0, 150, 0.25), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(0, 200, 255, 0.25), transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(255, 200, 0, 0.25), transparent 40%);
+
+    filter: blur(80px);
+}
+
+body.dark::before {
+    background:
+        radial-gradient(circle at 20% 30%, rgba(255, 0, 150, 0.12), transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(0, 150, 255, 0.12), transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(255, 180, 0, 0.12), transparent 40%);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+    z-index: 999;
+
+    background: transparent;
+    transition: background 0.4s ease;
+}
+
+body.win::after {
+    background: rgba(76, 175, 80, 0.25);
+}
+
+body.lose::after {
+    background: rgba(244, 67, 54, 0.25);
+}
+
+.screen {
+    padding-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+h1 {
+    font-size: 42px;
+    font-weight: 600;
+
+    color: #2e2e2e;
+
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+
+    text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+body.dark h1 {
+    color: #e0e0e0;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+}
+
+button {
+    background: linear-gradient(145deg, #4CAF50, #3e8e41);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    margin-top: 20px;
+    font-size: 16px;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+#board {
+    display: grid;
+    gap: 4px;
+    margin: 0;
+    padding: 10px;
+
+    background: rgba(0,0,0,0.1);
+    border-radius: 12px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.difficulty-select {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+}
+
+.difficulty-select select {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+
+    padding: 6px 10px;
+    font-size: 15px;
+
+    color: #333;
+    outline: none;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.difficulty-select select:hover,
+.difficulty-select select:focus {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+body.dark .difficulty-select select {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.tile {
+    width: 30px;
+    height: 30px;
+
+    background: linear-gradient(145deg, #d6d6d6, #bcbcbc);
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 6px;
+
+    box-shadow: 
+        2px 2px 4px rgba(0,0,0,0.2),
+        inset -1px -1px 2px rgba(255,255,255,0.5);
+
+    transition: all 0.15s ease;
+}
+
+.tile:hover {
+    filter: brightness(1.1);
+}
+
+.tile:active {
+    transform: scale(0.95);
+}
+
+.tile.revealed {
+    background: #e0e0e0;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.tile.mine-hit {
+    background: red;
+}
+
+.game-info {
+    margin: 0;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+#game-screen{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+#game-screen.hidden {
+    display: none;
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+
+    font-size: 22px;
+    padding: 8px 12px;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    z-index: 1000;
+}
+
+body.dark {
+    background: #121212;
+    color: #e0e0e0;
+}
+
+body.dark #board {
+    background: rgba(255,255,255,0.05);
+}
+
+body.dark .tile {
+    background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.info-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+
+    font-size: 20px;
+    padding: 8px 12px;
+
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+
+    color: black;
+    z-index: 2001;
+}
+
+.instructions {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 2000;
+    pointer-events: all;
+}
+
+.instructions.hidden {
+    display: none;
+}
+
+.instructions-box {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+    text-align: left;
+
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    border: none;
+    background: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+body.dark .info-toggle {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: white;
+}
+
+.screen {
+    transition: opacity 0.3s ease;
+}
+
+#result-title {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.spark {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, gold, orange, transparent);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.8;
+    z-index: 1;
+    box-shadow: 0 0 6px gold;
+
+    animation: sparkMove linear forwards;
+}
+
+@keyframes sparkMove {
+    0% {
+        transform: translateX(0) scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(300px) scale(0.3);
+        opacity: 0;
+    }
+}
